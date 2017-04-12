@@ -30,6 +30,7 @@ try:
                                 model_name=feed_model_name)
 except: # pragma: no cover
     feed_model = None
+from django.conf.settings import WEBSITE_DOMAIN
 
 
 class CustomFeedGenerator(Rss201rev2Feed):
@@ -106,8 +107,8 @@ class ExtendedFeed(Feed):
         item_content_field = feed_app_settings.feed_item_content_field
 
     def get_site_url(self):
-        site = Site.objects.get(is_default_site=True)
-        return site.root_url
+        #site = Site.objects.get(is_default_site=True)
+        return WEBSITE_DOMAIN
 
     def items(self):
         return feed_model.objects.order_by('-date').live()
@@ -152,7 +153,7 @@ class ExtendedFeed(Feed):
 
         soup = BeautifulSoup(content, 'html.parser')
         # Remove style attribute to remove large botton padding
-        for div in soup.find_all("div", {'class':'responsive-object'}): 
+        for div in soup.find_all("div", {'class':'responsive-object'}):
             del div['style']
         # Add site url to image source
         for img_tag in soup.findAll('img'):
