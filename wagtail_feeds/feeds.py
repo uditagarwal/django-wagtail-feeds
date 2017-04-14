@@ -30,7 +30,7 @@ try:
                                 model_name=feed_model_name)
 except: # pragma: no cover
     feed_model = None
-from django.conf.settings import WEBSITE_DOMAIN
+from django.conf import settings
 
 
 class CustomFeedGenerator(Rss201rev2Feed):
@@ -108,7 +108,7 @@ class ExtendedFeed(Feed):
 
     def get_site_url(self):
         #site = Site.objects.get(is_default_site=True)
-        return WEBSITE_DOMAIN
+        return settings.WEBSITE_DOMAIN
 
     def items(self):
         return feed_model.objects.order_by('-date').live()
